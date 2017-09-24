@@ -2,6 +2,7 @@
 
 // Setup express and create our app.
 var express = require('express');
+var http = require('http');
 
 var app = express();
 
@@ -43,6 +44,16 @@ app.use(function (err, req, res, next) {
 });
 
 
-app.listen(process.env.NODE_PORT);
-console.log('[SERVER] Listening on port ' + process.env.NODE_PORT);
+//app.listen(process.env.NODE_PORT);
 
+const server = http.createServer(app)
+
+setImmediate(() => {
+  var ip = process.env.IP || '0.0.0.0';
+  var port = process.env.PORT || 4000;
+  var env = process.env.NODE_ENV || 'development';
+  
+  server.listen(port, ip, () => {
+    console.log('Express server listening on %s:%d, in %s mode', ip, port, env)
+  })
+});
