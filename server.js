@@ -8,8 +8,6 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
-console.log('[APP] Starting server initialization');
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -33,6 +31,15 @@ router.get("/", (req, res, next) => {
 
 app.use('/calculate-scores', router);
 
+var r2 = express.Router();
+r2.get("/", (req, res, next) => {
+
+  console.log('Log -', new Date());
+  res.status(200).json({ message: 'Success' });
+});
+
+app.use('/log', r2);
+
 // Error handler
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
@@ -43,16 +50,13 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 
-
-//app.listen(process.env.NODE_PORT);
-
-const server = http.createServer(app)
+var server = http.createServer(app)
 
 setImmediate(() => {
   var ip = process.env.IP || '0.0.0.0';
   var port = process.env.PORT || 4000;
   var env = process.env.NODE_ENV || 'development';
-  
+
   server.listen(port, ip, () => {
     console.log('Express server listening on %s:%d, in %s mode', ip, port, env)
   })
