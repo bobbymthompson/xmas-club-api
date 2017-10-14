@@ -54,7 +54,7 @@ var server = http.createServer(app)
 
 setImmediate(() => {
   var ip = process.env.IP || '0.0.0.0';
-  var port = process.env.PORT || 4000;
+  var port = process.env.PORT || 4444;
   var env = process.env.NODE_ENV || 'development';
 
   server.listen(port, ip, () => {
