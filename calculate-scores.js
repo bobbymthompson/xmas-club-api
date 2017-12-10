@@ -39,7 +39,16 @@ module.exports = function (req, res, db) {
 
           scorecard.score = 0;
 
+          /* Keep track of the previous pick for use in over/unders. */
+          let previousPick = null;
+
           for (var pick of scorecard.picks) {
+
+            /* Use the previous picks teams when it is an over/under. */
+            if (pick.isOverUnder && pick.team1.toLowerCase() == 'over' && pick.team2.toLowerCase() == 'under') {
+              pick.team1 = previousPick.team1;
+              pick.team2 = previousPick.team2;
+            }
 
             var game = _.find(gameResults, (game) => {
               return (game.team1.name.toLowerCase() == pick.team1.toLowerCase()) && (game.team2.name.toLowerCase() == pick.team2.toLowerCase())
@@ -110,6 +119,8 @@ module.exports = function (req, res, db) {
                 }
               }
             }
+
+            previousPick = pick;
           }
 
           updateScores(db, scorecard);
