@@ -112,10 +112,10 @@ module.exports = function (req, res, db) {
                       }
                     }
                   }
+                }
 
-                  if (correct) {
-                    scorecard.score++;
-                  }
+                if (correct) {
+                  scorecard.score++;
                 }
               }
             }
